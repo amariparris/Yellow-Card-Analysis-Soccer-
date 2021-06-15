@@ -1,0 +1,33 @@
+install.packages("fastDummies")
+library(fastDummies)
+Premier.dummy<-dummy_cols(PremierLeague, select_columns =
+c("position","nationality","Current.Club"), remove_most_frequent_dummy = TRUE)
+View(Premier.dummy)
+Premier.dummy
+Premier.dummy$goals_home
+MultiLinMod=lm(Premier.dummy$yellow_cards_overall~Premier.dummy$position_Defender +
+Premier.dummy$position_Forward + Premier.dummy$position_Goalkeeper +
+Premier.dummy$goals_home, data=Premier.dummy)
+summary(MultiLinMod)
+cor(Premier.dummy$yellow_cards_overall, Premier.dummy$position_Defender)
+cor(Premier.dummy$yellow_cards_overall, Premier.dummy$position_Forward)
+cor(Premier.dummy$yellow_cards_overall, Premier.dummy$position_Goalkeeper)
+cor(Premier.dummy$yellow_cards_overall, Premier.dummy$goals_home)
+plot(Premier.dummy$position_Defender, Premier.dummy$yellow_cards_overall)
+modelSummary <- summary(MultiLinMod)
+modelSummary
+modelCoeffs <- modelSummary$coefficients
+beta.estimate <- modelCoeffs["Premier.dummy$position_Goalkeeper", "Estimate"]
+beta.estimate
+std.error <- modelCoeffs["Premier.dummy$position_Goalkeeper", "Std. Error"]
+std.error
+t_value <- beta.estimate/std.error
+t_value
+p_value <- 2*pt(-abs(t_value), df=nrow(Premier.dummy)-ncol(Premier.dummy))
+p_value
+f_statistic <- MultiLinMod$fstatistic[1]
+f_statistic
+f <- summary(MultiLinMod)$fstatistic
+f
+model_p <- pf(f[1], f[2], f[3], lower=FALSE)
+model_p
