@@ -1,2 +1,2 @@
 # Yellow-Card-Analysis-Soccer-
-Multiple Linear Regression to test the correlation between yellow cards  and several predictors 
+Multiple Linear Regression to examine correlation between yellow cards  and two predictors (position and home goals given up). 
